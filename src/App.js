@@ -1,5 +1,6 @@
 import './App.css';
-//import {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
+import {FaFreeCodeCamp} from 'react-icons/fa'
 
 
 const arr = [
@@ -11,7 +12,7 @@ const arr = [
   {
     keyCode: 87,
     text: "W",
-    src: "https://s3.amazonaws.com/freecodecamp/drums/Hea ter-2.mp3"
+    src: "https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3"
   },
   {
     keyCode: 69,
@@ -53,33 +54,67 @@ const arr = [
 
 function App() {
 
+  const [activeKey,setactiveKey] = useState("")
+
+  useEffect (() => {
+    document.addEventListener('keydown' , (event) =>{
+       playSound(event.key.toUpperCase());
+    });
+},[])
 
   function playSound (selector) {
     const audio = document.getElementById(selector);
      audio.play();
+     setactiveKey(selector);
   }
   return (
     <div className="App">
-          <div id ="drum-machine">
-         <div id ="display"></div>
-            <div  className="drum-pads"  >
-            {arr.map((arr) => (
-            <div onClick = {() => {
-              playSound(arr.text)
-            }} 
-            className="drum-pad" 
-            id={arr.src}
-            >
-              {arr.text}
-              <audio 
-              src={arr.src}
-              className="clip" 
-              id={arr.text}
+          <div  className='inner-container' id ="drum-machine">
+            
+          <div id ="display">{activeKey}</div>
 
-              ></audio>
+            <div  className="pad-bank"  >
+                        {arr.map((arr) => (
+                        <div onClick = {() => {
+                          playSound(arr.text)
+                        }} 
+                        className="drum-pad" 
+                        id={arr.src}
+                        >
+                          {arr.text}
+                          <audio 
+                          src={arr.src}
+                          className="clip" 
+                          id={arr.text}
+
+                          ></audio>
+                        </div>
+                        ))}   
+            </div>  
+            <div className='logo'>
+                          <div className='inner-logo'>FCC&nbsp;</div>
+                          <FaFreeCodeCamp className='inner-logo'/>
             </div>
-             ))}   
-            </div>        
+              
+              <div className='controls-container'>
+                <div className='control'>
+                  <p>Power</p>
+                  <div className='select'>
+                    <div className='inner' ></div>
+                  </div>
+                </div>
+                <p id="display">Heater 2</p>
+                <div className='volume-slider'>
+                  <input max="1" min="0" step="0.01" type="range" value="0.3" ></input>
+                </div>
+                <div className='control'>
+                  <p>Bank</p>
+                  <div className='select'>
+                    <div className='inner'></div>
+                  </div>
+                </div>
+              </div>
+
             </div>
     </div>
   );
